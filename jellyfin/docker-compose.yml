@@ -1,0 +1,66 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - BASE_URL=/jf
+      # - JELLYFIN_PublishedServerUrl=http://192.168.1.32 #optional
+    # user: 1000:1000
+    volumes:
+      - ~/.config/jellyfin:/config
+      - /tmp/cache/jellyfin:/cache
+      - type: bind
+        source: /mnt/disk1/multi-media
+        target: /media/personal
+        read_only: true
+      - type: bind
+        source: /mnt/disk1/multi-media-2
+        target: /media/movies
+        read_only: true
+      - type: bind
+        source: /mnt/disk1/multi-media-3
+        target: /media/swethas
+        read_only: true
+    ports:
+      - 8095:8095
+      # - 8096:8096
+      # - 8920:8920 #optional
+      # - 7359:7359/udp #optional
+      # - 1900:1900/udp #optional
+    # network_mode: 'host'
+    networks:
+      - shared-network
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4g
+        reservations:
+          cpus: '2'
+          memory: 2g
+
+  # haproxy:
+  #   image: haproxy:latest
+  #   container_name: haproxy
+  #   ports:
+  #     - "8096:8096"
+  #   volumes:
+  #     - ~/local/jellyfin/certs:/certs
+  #     - ~/local/jellyfin/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  #   depends_on:
+  #     - jellyfin
+  #   restart: unless-stopped
+  #   networks:
+  #     - shared-network
+  #
+networks:
+  shared-network:
+    external: true
+
+

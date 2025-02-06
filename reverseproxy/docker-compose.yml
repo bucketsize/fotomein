@@ -1,0 +1,28 @@
+services:
+  # nginx:
+  #   image: nginx:stable-alpine3.20
+  #   ports:
+  #     - "8096:8096"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #     - ./certs:/certs
+  #   networks:
+  #     - shared-network
+
+  httpd:
+    image: httpd:2.4-alpine 
+    ports:
+      - "8096:8096"
+      - "8080:8080"
+    volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf # Optional: Mount custom Apache configuration
+      - ./index.html:/var/www/html/index.html
+      - ./certs:/certs
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external: true
+
+    
