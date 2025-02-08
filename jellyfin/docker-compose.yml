@@ -1,6 +1,6 @@
 services:
   jellyfin:
-    image: jellyfin/jellyfin:latest
+    image: jellyfin/jellyfin:10.10.5
     container_name: jellyfin
     environment:
       - PUID=1000
@@ -26,8 +26,6 @@ services:
         read_only: true
     ports:
       - 8095:8095
-      # - 8096:8096
-      # - 8920:8920 #optional
       # - 7359:7359/udp #optional
       # - 1900:1900/udp #optional
     # network_mode: 'host'
@@ -39,26 +37,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '4'
-          memory: 4g
+          cpus: '2'
+          memory: 2g
         reservations:
           cpus: '2'
           memory: 2g
 
-  # haproxy:
-  #   image: haproxy:latest
-  #   container_name: haproxy
-  #   ports:
-  #     - "8096:8096"
-  #   volumes:
-  #     - ~/local/jellyfin/certs:/certs
-  #     - ~/local/jellyfin/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-  #   depends_on:
-  #     - jellyfin
-  #   restart: unless-stopped
-  #   networks:
-  #     - shared-network
-  #
 networks:
   shared-network:
     external: true
