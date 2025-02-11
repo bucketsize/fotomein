@@ -13,7 +13,7 @@ services:
     image: httpd:2.4-alpine 
     ports:
       - "8096:8096"
-      - "8080:8080"
+      - "8097:8097"
     volumes:
       - ./httpd.conf:/usr/local/apache2/conf/httpd.conf # Optional: Mount custom Apache configuration
       - ./index.html:/var/www/html/index.html
